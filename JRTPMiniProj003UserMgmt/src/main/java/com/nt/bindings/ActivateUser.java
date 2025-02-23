@@ -11,5 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ActivateUser {
 	
-	private 
+	private String Email;
+	private String tempPassword;
+	private String newPassword;
+	private String confirmPassword;
 }
