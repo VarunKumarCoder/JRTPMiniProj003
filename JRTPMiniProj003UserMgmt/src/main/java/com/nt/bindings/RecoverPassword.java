@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class LoginCredentials {
+@AllArgsConstructor
+public class RecoverPassword {
 
 	private String name;
-	private String password;
+	private String email;
 }
