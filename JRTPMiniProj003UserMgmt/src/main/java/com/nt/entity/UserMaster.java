@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class UserMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String userId;
+	private Integer userId;
 	@Column(length = 30)
 	private String name;
 	@Column(length = 90)
