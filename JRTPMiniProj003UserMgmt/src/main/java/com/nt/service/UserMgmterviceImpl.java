@@ -167,14 +167,26 @@ public class UserMgmterviceImpl implements UserMgmtService {
 
 	@Override
 	public String deleteUserById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<UserMaster> opt=userMasterRepo.findById(id);
+		if(opt.isPresent()) {
+			userMasterRepo.deleteById(id);
+			return "User is deleted";
+		}
+		else {
+			return "User is not Found to delete";
+		}
 	}
 
 	@Override
 	public String changeUserStatus(Integer id, String status) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<UserMaster> opt=userMasterRepo.findById(id);
+		if(opt.isPresent()) {
+			UserMaster master=opt.get();
+			master.setActive_Sw(status);
+			userMasterRepo.save(master);
+			return "User Status Changed";
+		}
+		return "User Not Found for changing the status";
 	}
 	
 	private String generateRandomPassword(int length) {
