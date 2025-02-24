@@ -101,7 +101,7 @@ public class UserMgmterviceImpl implements UserMgmtService {
 
 	@Override
 	public String recoverPassword(RecoverPassword recover) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -154,8 +154,9 @@ public class UserMgmterviceImpl implements UserMgmtService {
 	@Override
 	public String updateUser(UserAccount user) {
 		//using Custom Finder method
-				UserMaster master=userMasterRepo.fingByNameAndEmail(user.getName(), user.getEmail());
-				if(master!=null) {
+				Optional<UserMaster> opt=userMasterRepo.findById(user.getUserId());
+				if(opt.isPresent()) {
+					UserMaster master=opt.get();
 					BeanUtils.copyProperties(user, master);
 					userMasterRepo.save(master);
 					return "User Details are Updated";
