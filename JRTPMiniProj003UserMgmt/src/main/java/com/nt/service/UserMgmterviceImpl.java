@@ -131,18 +131,23 @@ public class UserMgmterviceImpl implements UserMgmtService {
 	@Override
 	public UserAccount showUsersById(Integer id) {
 		Optional<UserMaster> opt=userMasterRepo.findById(id);
+		UserAccount account=null;
 		if(opt.isPresent()) {
-			UserAccount account=new UserAccount();
+		account=new UserAccount();
 			BeanUtils.copyProperties( opt.get(),account);
-			return account;
 		}
-		return null;
+		return account;
 	}
 
 	@Override
 	public UserAccount showUsersByEmailAndName(String email, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		UserMaster master=userMasterRepo.fingByNameAndEmail(name, email);
+		UserAccount account=null;
+		if(master!=null) {
+			account=new UserAccount();
+			BeanUtils.copyProperties(master, account);
+		}
+		return account;
 	}
 
 	@Override
