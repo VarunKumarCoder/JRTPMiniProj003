@@ -141,6 +141,7 @@ public class UserMgmterviceImpl implements UserMgmtService {
 
 	@Override
 	public UserAccount showUsersByEmailAndName(String email, String name) {
+		//using Custom Finder method
 		UserMaster master=userMasterRepo.fingByNameAndEmail(name, email);
 		UserAccount account=null;
 		if(master!=null) {
@@ -152,8 +153,16 @@ public class UserMgmterviceImpl implements UserMgmtService {
 
 	@Override
 	public String updateUser(UserAccount user) {
-		
-		return null;
+		//using Custom Finder method
+				UserMaster master=userMasterRepo.fingByNameAndEmail(user.getName(), user.getEmail());
+				if(master!=null) {
+					BeanUtils.copyProperties(user, master);
+					userMasterRepo.save(master);
+					return "User Details are Updated";
+				}
+				else {
+					return "User not Found for Updation";
+				}
 	}
 
 	@Override
