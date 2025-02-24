@@ -207,8 +207,4 @@ public class UserMgmterviceImpl implements UserMgmtService {
 		return randomWord.toString();
 	}
 
-	
-
-	
-
 }
