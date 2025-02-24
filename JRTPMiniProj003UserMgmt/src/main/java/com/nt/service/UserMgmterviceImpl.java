@@ -101,8 +101,14 @@ public class UserMgmterviceImpl implements UserMgmtService {
 
 	@Override
 	public String recoverPassword(RecoverPassword recover) {
-		
-		return null;
+		UserMaster master=userMasterRepo.fingByNameAndEmail(recover.getName(), recover.getEmail());
+		if(master!=null) {
+			String pwd=master.getPassword();
+			//TODO :: Send the recovered Password to registered email Account
+			
+			return pwd;
+		}
+		return "User and Email is not Found";
 	}
 
 	@Override
