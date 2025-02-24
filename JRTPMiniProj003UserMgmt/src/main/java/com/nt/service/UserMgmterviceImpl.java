@@ -1,9 +1,11 @@
 
 package com.nt.service;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.nt.bindings.ActivateUser;
@@ -78,7 +80,22 @@ public class UserMgmterviceImpl implements UserMgmtService {
 	
 	@Override
 	public String login(LoginCredentials credentials) {
-		// TODO Auto-generated method stub
+		UserMaster master=new UserMaster();
+		BeanUtils.copyProperties(credentials, master);
+		Example<UserMaster> exmple=Example.of(master);
+		List<UserMaster> listEntities=userMasterRepo.findAll();
+		if(listEntities.size()==0) {
+			return " Invalid Credentials";
+		}
+		else {
+			UserMaster entity=listEntities.get(0);
+			if(master.getActive_Sw().equalsIgnoreCase("Active")) {
+				return " Valid Credentials and login successul";
+			}
+			else {
+				return " User Account is Not Active";
+			}
+		}
 		return null;
 	}
 
@@ -90,8 +107,25 @@ public class UserMgmterviceImpl implements UserMgmtService {
 
 	@Override
 	public List<UserAccount> listUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		//Report Generation using ForEach method
+		 
+		 List<UserMaster> listEntities=userMasterRepo.findAll();
+		
+		List<UserAccount> listUser=new ArrayList();
+		listEntities.forEach(entity->{
+			UserAccount user=new UserAccount();
+			BeanUtils.copyProperties(listEntities,user);
+			listUser.add(user);
+		});
+		return listUser; 
+		
+		//report generation using Stream API
+		
+		/*List<UserMaster> listEntities=userMasterRepo.findAll();
+		List<UserAccount> listUsers=listEntities.stream().map(entity->{
+			UserAccount user=new UserAccount();
+			BeanUtils.copyProperties(entity, user);
+		}).toList();*/
 	}
 
 	@Override
