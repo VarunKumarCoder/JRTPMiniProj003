@@ -37,12 +37,45 @@ public class UserMgmterviceImpl implements UserMgmtService {
 		return saveMaster!=null?"Uer is registered with Id value::"+saveMaster.getUserId():" Problem in user registration";
 	}
 
-	@Override
+	/*@Override
 	public String activateUserAccount(ActivateUser user) {
-		// TODO Auto-generated method stub
-		return null;
+		UserMaster master=new UserMaster();
+		master.setEmail(user.getEmail());
+		master.setPassword(user.getTempPassword());
+		Example<UserMaster> example=Example.of(master);
+		List<UserMaster> list=userMasterRepo.findAll(example);
+		
+		if(list.size()!=0) {
+			UserMaster entity=list.get(0);
+			entity.setPassword(user.getConfirmPassword());
+			entity.setActive_Sw("Active");
+			UserMaster updatedEntity=userMasterRepo.save(entity);
+			return "User is activated with new password";
+		}
+		return "User Not Found to activate";
 	}
 
+	@Override
+	public String login(LoginCredentials credentials) {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
+	
+	@Override
+	public String activateUserAccount(ActivateUser user) {
+		UserMaster entity=userMasterRepo.findByEmailAndPassword(user.getEmail(),user.getTempPassword());
+
+		if(entity==null) {
+			return "User is Not Found for activation";
+		}
+		else {
+			entity.setPassword(user.getConfirmPassword());
+			entity.setActive_Sw("Active");
+			UserMaster updatedEntity=userMasterRepo.save(entity);
+			return "User is Activated with new Password";
+		}
+	}
+	
 	@Override
 	public String login(LoginCredentials credentials) {
 		// TODO Auto-generated method stub
@@ -101,5 +134,9 @@ public class UserMgmterviceImpl implements UserMgmtService {
 		}
 		return randomWord.toString();
 	}
+
+	
+
+	
 
 }
