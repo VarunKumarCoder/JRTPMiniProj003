@@ -13,18 +13,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="JRTP_USER_MASTER")
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class UserMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
 	@Column(length = 30)
-	private String name;
+	private String name;	
+	@Column(length=10)
+	private String password;
 	@Column(length = 90)
 	private String email;
 	private Long mobileNo;
