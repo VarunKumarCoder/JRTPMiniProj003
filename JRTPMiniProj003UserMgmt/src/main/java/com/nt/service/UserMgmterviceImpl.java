@@ -2,6 +2,7 @@
 package com.nt.service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +97,6 @@ public class UserMgmterviceImpl implements UserMgmtService {
 				return " User Account is Not Active";
 			}
 		}
-		return null;
 	}
 
 	@Override
@@ -130,7 +130,12 @@ public class UserMgmterviceImpl implements UserMgmtService {
 
 	@Override
 	public UserAccount showUsersById(Integer id) {
-		// TODO Auto-generated method stub
+		Optional<UserMaster> opt=userMasterRepo.findById(id);
+		if(opt.isPresent()) {
+			UserAccount account=new UserAccount();
+			BeanUtils.copyProperties( opt.get(),account);
+			return account;
+		}
 		return null;
 	}
 
@@ -142,7 +147,7 @@ public class UserMgmterviceImpl implements UserMgmtService {
 
 	@Override
 	public String updateUser(UserAccount user) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
