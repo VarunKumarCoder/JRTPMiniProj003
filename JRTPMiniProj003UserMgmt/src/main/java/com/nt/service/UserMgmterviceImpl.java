@@ -83,7 +83,7 @@ public class UserMgmterviceImpl implements UserMgmtService {
 		UserMaster master=new UserMaster();
 		BeanUtils.copyProperties(credentials, master);
 		Example<UserMaster> exmple=Example.of(master);
-		List<UserMaster> listEntities=userMasterRepo.findAll();
+		List<UserMaster> listEntities=userMasterRepo.findAll(exmple);
 		if(listEntities.size()==0) {
 			return " Invalid Credentials";
 		}
