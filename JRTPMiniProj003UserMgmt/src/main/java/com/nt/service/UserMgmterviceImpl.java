@@ -15,14 +15,19 @@ import com.nt.bindings.RecoverPassword;
 import com.nt.bindings.UserAccount;
 import com.nt.entity.UserMaster;
 import com.nt.repository.IUserMasterRepository;
+import com.nt.utils.EmailUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class UserMgmterviceImpl implements UserMgmtService {
+	
 	@Autowired
 	private IUserMasterRepository userMasterRepo;
+	@Autowired
+	private EmailUtils emailUtils;
+	
 	@Override
 	public String registerUser(UserAccount user) {
 		log.info("Converting the UserAccount obj data into UserMaster object");
@@ -35,7 +40,8 @@ public class UserMgmterviceImpl implements UserMgmtService {
 		master.setActive_Sw("InActive");
 		UserMaster saveMaster=userMasterRepo.save(master);
 		//TODO :: Send the mail
-		
+		String subject="User Registration Success";
+		emailUtils.sendEmailMessage(user.getEmail(), subject, null);
 		log.info("At the Return statement using ternery operator and check the row is null or not");
 		return saveMaster!=null?"Uer is registered with Id value::"+saveMaster.getUserId():" Problem in user registration";
 	}

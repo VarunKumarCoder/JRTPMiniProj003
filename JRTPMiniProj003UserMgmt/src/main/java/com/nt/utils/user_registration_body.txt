@@ -1,0 +1,11 @@
+Hi {FULL-NAME},<br>
+<br>
+Your user account registration process is completed.<br>
+<br>
+Please Find Your Temperary Password below <br>
+<br> Temperary Password::{TEMP-PWD}. </br> <br>
+<br>
+<a href="{URL}"> Click Here to Unlock your Account</a>
+<br>
+<i> Thanks,<i> <br>
+	<i> Admin </i>
