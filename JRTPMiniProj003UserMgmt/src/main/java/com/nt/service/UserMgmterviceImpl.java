@@ -1,5 +1,7 @@
 
 package com.nt.service;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,19 +31,21 @@ public class UserMgmterviceImpl implements UserMgmtService {
 	private EmailUtils emailUtils;
 	
 	@Override
-	public String registerUser(UserAccount user) {
+	public String registerUser(UserAccount user) throws Exception {
 		log.info("Converting the UserAccount obj data into UserMaster object");
 		UserMaster master=new UserMaster();
 		log.info("Copy using BeanUtils");
 		BeanUtils.copyProperties(user, master);
+		String tempPwd=generateRandomPassword(6);
 		log.info("Calling private generate random password method ");
-		master.setPassword(generateRandomPassword(6));
+		master.setPassword(tempPwd);
 		log.info("Set active switch status");
 		master.setActive_Sw("InActive");
 		UserMaster saveMaster=userMasterRepo.save(master);
-		//TODO :: Send the mail
+		//TODO :: Send the mail	
 		String subject="User Registration Success";
-		emailUtils.sendEmailMessage(user.getEmail(), subject, null);
+		String body=readEmailMessageBody("user_registration_body.txt", user.getName(), tempPwd);
+		emailUtils.sendEmailMessage(user.getEmail(), subject, body);
 		log.info("At the Return statement using ternery operator and check the row is null or not");
 		return saveMaster!=null?"Uer is registered with Id value::"+saveMaster.getUserId():" Problem in user registration";
 	}
@@ -201,7 +205,7 @@ public class UserMgmterviceImpl implements UserMgmtService {
 		}
 		return "User Not Found for changing the status";
 	}
-	
+	//Helper Methods
 	private String generateRandomPassword(int length) {
 		String AlphaNumericStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder randomWord=new StringBuilder(length);
@@ -212,5 +216,28 @@ public class UserMgmterviceImpl implements UserMgmtService {
 		}
 		return randomWord.toString();
 	}
-
+	
+	private String readEmailMessageBody(String fileName,String fullName,String pwd) throws Exception{
+		String mailBody=null;
+		String url=" ";
+		try(FileReader reader=new FileReader(fileName);
+		BufferedReader br=new BufferedReader(reader)){
+			StringBuffer buffer=new StringBuffer();
+			String line=null;
+			do {
+				line=br.readLine();
+				buffer.append(line);
+			}while(line!=null);
+			mailBody=buffer.toString();
+			mailBody.replace("{FULL-NAME}", fullName);
+			mailBody.replace("{TEMP-PWD}", pwd);
+			mailBody.replace("{URL}", url);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return mailBody;
+	}
 }
+

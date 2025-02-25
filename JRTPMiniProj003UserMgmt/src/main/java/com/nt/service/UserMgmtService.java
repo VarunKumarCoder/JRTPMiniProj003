@@ -9,7 +9,7 @@ import com.nt.bindings.UserAccount;
 
 public interface UserMgmtService {
 	
-	public String registerUser(UserAccount user);
+	public String registerUser(UserAccount user) throws Exception;
 	public String activateUserAccount(ActivateUser user);
 	public String login(LoginCredentials credentials);
 	public String recoverPassword(RecoverPassword recover);
