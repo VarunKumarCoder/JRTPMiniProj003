@@ -12,7 +12,7 @@ public interface UserMgmtService {
 	public String registerUser(UserAccount user) throws Exception;
 	public String activateUserAccount(ActivateUser user);
 	public String login(LoginCredentials credentials);
-	public String recoverPassword(RecoverPassword recover);
+	public String recoverPassword(RecoverPassword recover) throws Exception;
 	public List<UserAccount> listUsers();
 	public UserAccount showUsersById(Integer id);
 	public UserAccount showUsersByEmailAndName(String email,String name);

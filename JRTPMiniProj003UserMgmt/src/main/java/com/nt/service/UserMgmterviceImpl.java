@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class UserMgmterviceImpl implements UserMgmtService {
 	private IUserMasterRepository userMasterRepo;
 	@Autowired
 	private EmailUtils emailUtils;
+	@Autowired
+	private Environment env;
 	
 	@Override
 	public String registerUser(UserAccount user) throws Exception {
@@ -44,7 +47,7 @@ public class UserMgmterviceImpl implements UserMgmtService {
 		UserMaster saveMaster=userMasterRepo.save(master);
 		//TODO :: Send the mail	
 		String subject="User Registration Success";
-		String body=readEmailMessageBody("user_registration_body.txt", user.getName(), tempPwd);
+		String body=readEmailMessageBody(env.getProperty("mailBody.registeruser.location"), user.getName(), tempPwd);
 		emailUtils.sendEmailMessage(user.getEmail(), subject, body);
 		log.info("At the Return statement using ternery operator and check the row is null or not");
 		return saveMaster!=null?"Uer is registered with Id value::"+saveMaster.getUserId():" Problem in user registration";
@@ -110,12 +113,14 @@ public class UserMgmterviceImpl implements UserMgmtService {
 	}
 
 	@Override
-	public String recoverPassword(RecoverPassword recover) {
+	public String recoverPassword(RecoverPassword recover) throws Exception  {
 		UserMaster master=userMasterRepo.fingByNameAndEmail(recover.getName(), recover.getEmail());
 		if(master!=null) {
 			String pwd=master.getPassword();
 			//TODO :: Send the recovered Password to registered email Account
-			
+			String subject="Mail For Password Recovery";
+			String mailBody=readEmailMessageBody(env.getProperty("mailBody.recoverpwd.location"), recover.getName(), pwd);
+			emailUtils.sendEmailMessage(recover.getEmail(), subject,mailBody);
 			return pwd;
 		}
 		return "User and Email is not Found";

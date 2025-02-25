@@ -1,0 +1,9 @@
+Hi {FULL-NAME},<br>
+<br>
+Your user account password recovery process is completed.<br>
+<br>
+Please Find Your Temperary Password below <br>
+<br>  Password::{PWD}. </br> <br>
+<br>
+<i> Thanks,<i> <br>
+	<i> Admin </i>
