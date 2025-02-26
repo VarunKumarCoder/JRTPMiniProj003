@@ -235,7 +235,7 @@ public class UserMgmterviceImpl implements UserMgmtService {
 			}while(line!=null);
 			mailBody=buffer.toString();
 			mailBody.replace("{FULL-NAME}", fullName);
-			mailBody.replace("{TEMP-PWD}", pwd);
+			mailBody.replace("{PWD}", pwd);
 			mailBody.replace("{URL}", url);
 		}
 		catch (Exception e) {
